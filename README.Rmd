@@ -1,0 +1,95 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# tcopula
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+`tcopula` implements the algorithm described in the paper ["Estimation of Structured t-Copulas"](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1126401), from 
+Attilio Meucci.
+
+## Installation
+
+You can install the development version of `tcopula` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Reckziegel/tcopula")
+```
+
+## Case Study
+
+This section replicates the original paper results. 
+
+Consider constant maturities swaps of 7 different issue dates (`1y`, `2y`, `5y`, `7y`, `10y`, `15y` and `30y`), ranging from `1995-05-01` to `2005-04-21`, for a total of 2500 daily realizations. 
+
+```{r}
+library(tcopula)
+
+data("DB_SwapParRates")
+
+Rates <- DB_SwapParRates
+
+head(Rates, 2)
+
+tail(Rates, 2)
+```
+
+To model this data, first recognize that, as point out in [Risk and Asset Allocation](https://www.springer.com/gp/book/9783540222132), the daily changes in interest-rates can be considered ~ approximately ~ "invariant" (stationary). For 
+that reason, the estimation process is usually carried out by taking the 
+interest-rates first differences:
+
+```{r}
+X <- Rates[2:nrow(Rates), ] - Rates[1:nrow(Rates) - 1, ]
+```
+
+On top of that, it's known that the the first 3 principal components explain most 
+of the yield-curve variations (see Litterman and Scheinkman paper [here](https://www.math.nyu.edu/faculty/avellane/Litterman1991.pdf)). 
+
+We use this knowledge to shrink the dimension of the dataset and avoid noisy signals
+from low eigenvalues that are not well defined. By setting `K = 3`, the main sources
+of relevant information (aka level, steepness and curvature) are taken into account, while the remaining factors are assumed to follow and isotropic structure: 
+
+```{r}
+K <- 3
+tol <- 10 ^ (-10)
+
+fit <- StrucTMLE(X = X, K = K, Tolerance = tol)
+fit 
+```
+
+As the output shows, the commovements in interest-rates variations are 
+quite high. The optimum degree of freedom is $v=50$, which may indicate that 
+fat-tails are not an issue for this particular dataset. 
+
+Finally, `figure 1` can be replicated with an additional help from 
+the [ggplot2](https://ggplot2.tidyverse.org/) package.
+
+```{r}
+library(ggplot2)
+
+df <- data.frame(
+  factors     = as.factor(1:7), 
+  eigenvalues = eigen(fit$C)$values
+) 
+
+ggplot(data = df, aes(x = factors, y = eigenvalues, fill = factors)) + 
+  geom_col() + 
+  scale_fill_viridis_d(option = "E")
+
+```
+
+
