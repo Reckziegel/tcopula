@@ -24,7 +24,7 @@ SeparateMargCop <- function(X) {
 
   # MATLAB does this operation in one shot. In R, we have to loop over...
   for (k in 1:K) {
-    tmp  <- sort(X[ , k], index.return = TRUE)
+    tmp  <- sort(X[ , k, drop = FALSE], index.return = TRUE)
     W[ , k] <- tmp$x
     C[ , k] <- tmp$ix
   }

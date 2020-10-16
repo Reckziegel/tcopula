@@ -3,9 +3,9 @@
 \docType{package}
 \name{tcopula}
 \alias{tcopula}
-\title{tcopula: A package for computating structured t-copulas}
+\title{tcopula: A package for computing structured t-copulas}
 \description{
-This package implements the algorithm described in "Estimation of Structured
+The package implements the algorithm described in "Estimation of Structured
 t-Copulas".
 }
 \references{

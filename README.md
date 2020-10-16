@@ -5,12 +5,19 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/Reckziegel/tcopula.svg?branch=master)](https://travis-ci.com/Reckziegel/tcopula)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/Reckziegel/tcopula?branch=master&svg=true)](https://ci.appveyor.com/project/Reckziegel/tcopula)
+[![Codecov test
+coverage](https://codecov.io/gh/Reckziegel/tcopula/branch/master/graph/badge.svg)](https://codecov.io/gh/Reckziegel/tcopula?branch=master)
+[![R build
+status](https://github.com/Reckziegel/tcopula/workflows/R-CMD-check/badge.svg)](https://github.com/Reckziegel/tcopula/actions)
 <!-- badges: end -->
 
-`tcopula` implements the algorithm described in the paper [“Estimation
-of Structured
-t-Copulas”](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1126401),
-from Attilio Meucci.
+`tcopula` ports the MATLAB package [“Estimation of Structured
+t-Copulas”](https://la.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas?s_tid=prof_contriblnk)
+into R.
 
 ## Installation
 
@@ -24,11 +31,9 @@ devtools::install_github("Reckziegel/tcopula")
 
 ## Case Study
 
-This section replicates the original paper results.
-
-Consider constant maturities swaps of 7 different issue dates (`1y`,
-`2y`, `5y`, `7y`, `10y`, `15y` and `30y`), ranging from `1995-05-01` to
-`2005-04-21`, for a total of 2500 daily realizations.
+Consider 7 constant maturities swap rates (`1y`, `2y`, `5y`, `7y`,
+`10y`, `15y` and `30y`) from `1995-05-01` to `2005-04-21`, for a total
+of 2500 daily realizations.
 
 ``` r
 library(tcopula)
@@ -48,26 +53,27 @@ tail(Rates, 2)
 #> 2005-04-21 0.03611 0.03905 0.04295 0.04460 0.04647 0.04864 0.05037
 ```
 
-To model this data, first recognize that, as point out in [Risk and
-Asset Allocation](https://www.springer.com/gp/book/9783540222132), the
-daily changes in interest-rates can be considered \~ approximately \~
-“invariant” (stationary). For that reason, the estimation process is
-usually carried out by taking the interest-rates first differences:
+In [Risk and Asset
+Allocation](https://www.springer.com/gp/book/9783540222132), Meucci
+shows that an absolute variation in interest-rates can be considered \~
+approximately \~ “invariant” (stationary). For that reason, the
+estimation process is usually carried out by taking the interest-rates
+first difference:
 
 ``` r
 X <- Rates[2:nrow(Rates), ] - Rates[1:nrow(Rates) - 1, ]
 ```
 
-On top of that, it’s known that the the first 3 principal components
-explain most of the yield-curve variations (see Litterman and Scheinkman
-paper
+On top of that, it’s known that the first 3 principal components explain
+most of the yield-curve variations (see Litterman and Scheinkman paper
 [here](https://www.math.nyu.edu/faculty/avellane/Litterman1991.pdf)).
 
-We use this knowledge to shrink the dimension of the dataset and avoid
-noisy signals from low eigenvalues that are not well defined. By setting
-`K = 3`, the main sources of relevant information (aka level, steepness
-and curvature) are taken into account, while the remaining factors are
-assumed to follow and isotropic structure:
+This knowledge can be used to shrink the dimension of the dataset and
+avoid noisy signals from low eigenvalues that are not well defined. By
+setting `K = 3` in the function `StrucTMLE`, the main sources of
+relevant information (aka level, steepness and curvature) are taken into
+account, while the remaining factors are assumed to follow an isotropic
+structure:
 
 ``` r
 K <- 3
@@ -90,11 +96,12 @@ fit
 ```
 
 As the output shows, the commovements in interest-rates variations are
-quite high. The optimum degree of freedom is \(v=50\), which may
+quite high. The optimal degree of freedom is \(v=50\), which may
 indicate that fat-tails are not an issue for this particular dataset.
 
-Finally, `figure 1` can be replicated with an additional help from the
-[ggplot2](https://ggplot2.tidyverse.org/) package.
+Finally, the imposed eigenvalue structure can be visualized with an
+additional help from the [ggplot2](https://ggplot2.tidyverse.org/)
+package.
 
 ``` r
 library(ggplot2)
@@ -109,4 +116,14 @@ ggplot(data = df, aes(x = factors, y = eigenvalues, fill = factors)) +
   scale_fill_viridis_d(option = "E")
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
+
+## References
+
+Meucci, Attilio, *Estimation of Structured T-Copulas* (April 2008).
+Available at SSRN: <https://ssrn.com/abstract=1126401> or
+<http://dx.doi.org/10.2139/ssrn.1126401>.
+
+Attilio Meucci (2020). [Estimation of Structured
+t-Copulas](https://www.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas),
+MATLAB Central File Exchange. Retrieved October 14, 2020.

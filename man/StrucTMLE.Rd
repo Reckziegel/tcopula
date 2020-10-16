@@ -7,22 +7,30 @@
 StrucTMLE(X, K, Tolerance = 10^(-10))
 }
 \arguments{
-\item{X}{A numeric matrix.}
+\item{X}{A \code{matrix} made of timeseries invariants.}
 
-\item{K}{A numeric scalar.}
+\item{K}{A \code{numeric} scalar with the number of factors.}
 
-\item{Tolerance}{A numeric scalar.}
+\item{Tolerance}{A \code{numeric} scalar used for convergence. By default,
+the algorithm stops it's computations when the error is smaller than \code{10^(-10)}.}
 }
 \value{
-A \code{list} with 2 components: Nu (the degrees of freedom) and C (the
-correlation matrix).
+A \code{list} with 2 components: \code{Nu} (the degrees of freedom)
+and \code{C} (the correlation matrix).
 }
 \description{
-This function recursively computes the ML estimators of the correlation matrix
-and the degrees of freedom of a t-copula with isotropic structure.
+Recursively computes the the correlation matrix and the degrees of freedom
+by Maximum-Likelihood (ML) of a t-copula with isotropic structure.
 }
 \examples{
-#
+data("DB_SwapParRates")
+Rates <- DB_SwapParRates
+
+# The first difference is stationary
+X <- Rates[2:nrow(Rates), ] - Rates[1:nrow(Rates) - 1, ]
+
+# fit the model
+StrucTMLE(X = X, K = 3)
 }
 \references{
 Meucci, Attilio, Estimation of Structured T-Copulas (April 2008). Available

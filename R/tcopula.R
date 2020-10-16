@@ -1,6 +1,6 @@
-#' tcopula: A package for computating structured t-copulas
+#' tcopula: A package for computing structured t-copulas
 #'
-#' This package implements the algorithm described in "Estimation of Structured
+#' The package implements the algorithm described in "Estimation of Structured
 #' t-Copulas".
 #'
 #' @references
