@@ -71,7 +71,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tcopula" class="anchor"></a>tcopula</h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p><code>tcopula</code> ports the MATLAB package <a href="https://la.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas?s_tid=prof_contriblnk">“Estimation of Structured t-Copulas”</a> into R.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -85,7 +85,6 @@
 <div id="case-study" class="section level2">
 <h2 class="hasAnchor">
 <a href="#case-study" class="anchor"></a>Case Study</h2>
-<p>This section replicates the original paper results.</p>
 <p>Consider 7 constant maturities swap rates (<code>1y</code>, <code>2y</code>, <code>5y</code>, <code>7y</code>, <code>10y</code>, <code>15y</code> and <code>30y</code>) from <code>1995-05-01</code> to <code>2005-04-21</code>, for a total of 2500 daily realizations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Reckziegel/tcopula">tcopula</a></span>)
@@ -104,12 +103,12 @@
 <span class="co">#&gt; 2005-04-20 0.03595 0.03889 0.04279 0.04445 0.04637 0.04844 0.05008</span>
 <span class="co">#&gt; 2005-04-21 0.03611 0.03905 0.04295 0.04460 0.04647 0.04864 0.05037</span>
 </pre></div>
-<p>In <a href="https://www.springer.com/gp/book/9783540222132">Risk and Asset Allocation</a>, Meucci shows that an absolute variation in interest-rates can be considered ~ approximately ~ “invariant” (stationary). For that reason, the estimation process is usually carried out by taking the interest-rates first differences:</p>
+<p>In <a href="https://www.springer.com/gp/book/9783540222132">Risk and Asset Allocation</a>, Meucci shows that an absolute variation in interest-rates can be considered ~ approximately ~ “invariant” (stationary). For that reason, the estimation process is usually carried out by taking the interest-rates first difference:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="kw">X</span> <span class="op">&lt;-</span> <span class="kw">Rates</span>[<span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">Rates</span>), ] <span class="op">-</span> <span class="kw">Rates</span>[<span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">Rates</span>) <span class="op">-</span> <span class="fl">1</span>, ]
 </pre></div>
 <p>On top of that, it’s known that the first 3 principal components explain most of the yield-curve variations (see Litterman and Scheinkman paper <a href="https://www.math.nyu.edu/faculty/avellane/Litterman1991.pdf">here</a>).</p>
-<p>This knowledge can be used to shrink the dimension of the dataset and avoid noisy signals from low eigenvalues that are not well defined. By setting <code>K = 3</code>, the main sources of relevant information (aka level, steepness and curvature) are taken into account, while the remaining factors are assumed to follow an isotropic structure:</p>
+<p>This knowledge can be used to shrink the dimension of the dataset and avoid noisy signals from low eigenvalues that are not well defined. By setting <code>K = 3</code> in the function <code>StrucTMLE</code>, the main sources of relevant information (aka level, steepness and curvature) are taken into account, while the remaining factors are assumed to follow an isotropic structure:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">K</span> <span class="op">&lt;-</span> <span class="fl">3</span>
 <span class="kw">tol</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">^</span> (<span class="op">-</span><span class="fl">10</span>)
@@ -129,8 +128,8 @@
 <span class="co">#&gt; 15y 0.8105573 0.8808805 0.9602568 0.9767635 0.9891340 1.0000000 0.9755292</span>
 <span class="co">#&gt; 30y 0.7479613 0.8107507 0.9049002 0.9330718 0.9627638 0.9755292 1.0000000</span>
 </pre></div>
-<p>As the output shows, the commovements in interest-rates variations are quite high. The optimum degree of freedom is <span class="math inline"><em>v</em> = 50</span>, which may indicate that fat-tails are not an issue for this particular dataset.</p>
-<p>Finally, <code>figure 1</code> can be replicated with an additional help from the <a href="https://ggplot2.tidyverse.org/">ggplot2</a> package.</p>
+<p>As the output shows, the commovements in interest-rates variations are quite high. The optimal degree of freedom is <span class="math inline"><em>v</em> = 50</span>, which may indicate that fat-tails are not an issue for this particular dataset.</p>
+<p>Finally, the imposed eigenvalue structure can be visualized with an additional help from the <a href="https://ggplot2.tidyverse.org/">ggplot2</a> package.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
 
@@ -178,7 +177,16 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.com/Reckziegel/tcopula"><img src="https://travis-ci.com/Reckziegel/tcopula.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://ci.appveyor.com/project/Reckziegel/tcopula"><img src="https://ci.appveyor.com/api/projects/status/github/Reckziegel/tcopula?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
+<li><a href="https://codecov.io/gh/Reckziegel/tcopula?branch=master"><img src="https://codecov.io/gh/Reckziegel/tcopula/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/Reckziegel/tcopula/actions"><img src="https://github.com/Reckziegel/tcopula/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

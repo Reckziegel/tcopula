@@ -6,11 +6,11 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/Reckziegel/tcopula.svg?branch=master)](https://travis-ci.com/Reckziegel/tcopula)
+status](https://travis-ci.com/Reckziegel/tcopula.svg?branch=main)](https://travis-ci.com/Reckziegel/tcopula)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/Reckziegel/tcopula?branch=master&svg=true)](https://ci.appveyor.com/project/Reckziegel/tcopula)
+status](https://ci.appveyor.com/api/projects/status/y5m45mjh0v4q7ae0?svg=true)](https://ci.appveyor.com/project/Reckziegel/tcopula)
 [![Codecov test
-coverage](https://codecov.io/gh/Reckziegel/tcopula/branch/master/graph/badge.svg)](https://codecov.io/gh/Reckziegel/tcopula?branch=master)
+coverage](https://codecov.io/gh/Reckziegel/tcopula/branch/main/graph/badge.svg?token=yhLyvgUz3J)](https://codecov.io/gh/Reckziegel/tcopula?branch=master)
 [![R build
 status](https://github.com/Reckziegel/tcopula/workflows/R-CMD-check/badge.svg)](https://github.com/Reckziegel/tcopula/actions)
 <!-- badges: end -->
