@@ -11,13 +11,8 @@ status](https://travis-ci.com/Reckziegel/tcopula.svg?branch=main)](https://travi
 status](https://ci.appveyor.com/api/projects/status/y5m45mjh0v4q7ae0?svg=true)](https://ci.appveyor.com/project/Reckziegel/tcopula)
 [![Codecov test
 coverage](https://codecov.io/gh/Reckziegel/tcopula/branch/main/graph/badge.svg?token=yhLyvgUz3J)](https://codecov.io/gh/Reckziegel/tcopula?branch=master)
-[![R build
-status](https://github.com/Reckziegel/tcopula/workflows/R-CMD-check/badge.svg)](https://github.com/Reckziegel/tcopula/actions)
+[![R-CMD-check](https://github.com/Reckziegel/tcopula/workflows/R-CMD-check/badge.svg)](https://github.com/Reckziegel/tcopula/actions)
 <!-- badges: end -->
-
-`tcopula` ports the MATLAB package [“Estimation of Structured
-t-Copulas”](https://la.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas?s_tid=prof_contriblnk)
-into R.
 
 ## Installation
 
@@ -33,53 +28,50 @@ devtools::install_github("Reckziegel/tcopula")
 
 Consider 7 constant maturities swap rates (`1y`, `2y`, `5y`, `7y`,
 `10y`, `15y` and `30y`) from `1995-05-01` to `2005-04-21`, for a total
-of 2500 daily realizations.
+of 2501 daily realizations.
 
 ``` r
 library(tcopula)
 
-data("DB_SwapParRates")
-
-Rates <- DB_SwapParRates
-
-head(Rates, 2)
+data("swap")
+head(swap, 2)
 #>                 1y      2y      5y      7y     10y     15y     30y
 #> 1995-05-01 0.06630 0.06858 0.07166 0.07287 0.07452 0.07612 0.07796
 #> 1995-05-02 0.06586 0.06792 0.07102 0.07232 0.07413 0.07573 0.07775
-
-tail(Rates, 2)
+tail(swap, 2)
 #>                 1y      2y      5y      7y     10y     15y     30y
 #> 2005-04-20 0.03595 0.03889 0.04279 0.04445 0.04637 0.04844 0.05008
 #> 2005-04-21 0.03611 0.03905 0.04295 0.04460 0.04647 0.04864 0.05037
 ```
 
-In [Risk and Asset
-Allocation](https://www.springer.com/gp/book/9783540222132), Meucci
-shows that an absolute variation in interest-rates can be considered \~
-approximately \~ “invariant” (stationary). For that reason, the
-estimation process is usually carried out by taking the interest-rates
-first difference:
+To achieve stationarity, the risk-driver (`swap`) has to be
+differentiated once:
 
 ``` r
-X <- Rates[2:nrow(Rates), ] - Rates[1:nrow(Rates) - 1, ]
+swap_diff <- swap[2:nrow(swap), ] - swap[1:nrow(swap) - 1, ]
+head(swap_diff)
+#>                  1y       2y       5y       7y      10y      15y      30y
+#> 1995-05-02 -0.00044 -0.00066 -0.00064 -0.00055 -0.00039 -0.00039 -0.00021
+#> 1995-05-03 -0.00086 -0.00112 -0.00105 -0.00107 -0.00097 -0.00087 -0.00072
+#> 1995-05-04 -0.00057 -0.00085 -0.00097 -0.00100 -0.00104 -0.00104 -0.00106
+#> 1995-05-05 -0.00217 -0.00255 -0.00221 -0.00195 -0.00190 -0.00190 -0.00149
+#> 1995-05-08  0.00018  0.00020  0.00005  0.00003  0.00011  0.00011  0.00011
+#> 1995-05-09 -0.00090 -0.00114 -0.00100 -0.00097 -0.00094 -0.00094 -0.00079
 ```
 
-On top of that, it’s known that the first 3 principal components explain
-most of the yield-curve variations (see Litterman and Scheinkman paper
-[here](https://www.math.nyu.edu/faculty/avellane/Litterman1991.pdf)).
+Because the first 3 principal components explain most of the variations
+in yield-curve (see
+[here](https://www.math.nyu.edu/faculty/avellane/Litterman1991.pdf))
+it’s common to shrink the dimension of `swap_diff` to avoid noisy
+signals from eigenvalues that are not well defined.
 
-This knowledge can be used to shrink the dimension of the dataset and
-avoid noisy signals from low eigenvalues that are not well defined. By
-setting `K = 3` in the function `StrucTMLE`, the main sources of
-relevant information (aka level, steepness and curvature) are taken into
+By setting `k = 3` in `struct_t_mle()`, the main sources of relevant
+information (aka level, steepness and curvature) are still taken into
 account, while the remaining factors are assumed to follow an isotropic
 structure:
 
 ``` r
-K <- 3
-tol <- 10 ^ (-10)
-
-fit <- StrucTMLE(X = X, K = K, Tolerance = tol)
+fit <- struct_t_mle(x = swap_diff, k = 3, tolerance = 1e-10)
 fit 
 #> $Nu
 #> [1] 49
@@ -96,12 +88,11 @@ fit
 ```
 
 As the output shows, the commovements in interest-rates variations are
-quite high. The optimal degree of freedom is \(v=50\), which may
-indicate that fat-tails are not an issue for this particular dataset.
+quite high. The optimal degree of freedom for `swap_diff` is *v* = 49,
+which may indicate that tick-tails are not an issue for this particular
+dataset.
 
-Finally, the imposed eigenvalue structure can be visualized with an
-additional help from the [ggplot2](https://ggplot2.tidyverse.org/)
-package.
+The imposed structure stands-out in the image that follows:
 
 ``` r
 library(ggplot2)
@@ -120,10 +111,10 @@ ggplot(data = df, aes(x = factors, y = eigenvalues, fill = factors)) +
 
 ## References
 
-Meucci, Attilio, *Estimation of Structured T-Copulas* (April 2008).
-Available at SSRN: <https://ssrn.com/abstract=1126401> or
-<http://dx.doi.org/10.2139/ssrn.1126401>.
+-   Attilio Meucci (2020). [Estimation of Structured
+    t-Copulas](https://www.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas),
+    MATLAB Central File Exchange. Retrieved October 14, 2020.
 
-Attilio Meucci (2020). [Estimation of Structured
-t-Copulas](https://www.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas),
-MATLAB Central File Exchange. Retrieved October 14, 2020.
+-   Meucci, Attilio, *Estimation of Structured T-Copulas* (April 2008).
+    Available at SSRN: <https://www.ssrn.com/abstract=1126401> or
+    <http://dx.doi.org/10.2139/ssrn.1126401>.

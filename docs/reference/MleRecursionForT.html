@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computes ML Estimator of the Correlation Matrix — MleRecursionForT • tcopula</title>
+<title>Computes the Correlation ML Estimator — MleRecursionForT • tcopula</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Computes ML Estimator of the Correlation Matrix — MleRecursionForT" />
-<meta property="og:description" content="This function recursively computes the ML estimators of the correlation matrix
-of a t-copula with isotropic structure." />
+<meta property="og:title" content="Computes the Correlation ML Estimator — MleRecursionForT" />
+<meta property="og:description" content="This function recursively computes the ML estimators of a correlation matrix
+with t-copula and isotropic structure." />
 
 
 
@@ -81,7 +81,7 @@ of a t-copula with isotropic structure." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,7 +92,7 @@ of a t-copula with isotropic structure." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Reckziegel/tcopula/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,17 +109,17 @@ of a t-copula with isotropic structure." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computes ML Estimator of the Correlation Matrix</h1>
+    <h1>Computes the Correlation ML Estimator</h1>
     <small class="dont-index">Source: <a href='https://github.com/Reckziegel/tcopula/blob/master/R/MleRecursionForT.R'><code>R/MleRecursionForT.R</code></a></small>
     <div class="hidden name"><code>MleRecursionForT.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function recursively computes the ML estimators of the correlation matrix
-of a t-copula with isotropic structure.</p>
+    <p>This function recursively computes the ML estimators of a correlation matrix
+with t-copula and isotropic structure.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>MleRecursionForT</span>(<span class='kw'>x</span>, <span class='kw'>Nu</span>, <span class='kw'>K</span>, Tolerance = <span class='fl'>10</span><span class='op'>^</span>(<span class='op'>-</span><span class='fl'>10</span>))</pre>
+    <pre class="usage"><span class='fu'>MleRecursionForT</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>nu</span>, <span class='va'>k</span>, tolerance <span class='op'>=</span> <span class='fl'>1e-10</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,15 +129,15 @@ of a t-copula with isotropic structure.</p>
       <td><p>A numeric matrix.</p></td>
     </tr>
     <tr>
-      <th>Nu</th>
+      <th>nu</th>
       <td><p>A numeric scalar.</p></td>
     </tr>
     <tr>
-      <th>K</th>
+      <th>k</th>
       <td><p>A numeric scalar.</p></td>
     </tr>
     <tr>
-      <th>Tolerance</th>
+      <th>tolerance</th>
       <td><p>A numeric scalar.</p></td>
     </tr>
     </table>
@@ -146,9 +146,6 @@ of a t-copula with isotropic structure.</p>
 
     <p>A correlation matrix.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>#</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -1,25 +1,22 @@
-#' Computes ML Estimator of the Correlation Matrix
+#' Computes the Correlation ML Estimator
 #'
-#' This function recursively computes the ML estimators of the correlation matrix
-#' of a t-copula with isotropic structure.
+#' This function recursively computes the ML estimators of a correlation matrix
+#' with t-copula and isotropic structure.
 #'
 #' @param x A numeric matrix.
-#' @param Nu A numeric scalar.
-#' @param K A numeric scalar.
-#' @param Tolerance A numeric scalar.
+#' @param nu A numeric scalar.
+#' @param k A numeric scalar.
+#' @param tolerance A numeric scalar.
 #'
 #' @return A correlation matrix.
 #'
 #' @keywords internal
-#'
-#' @examples
-#' #
-MleRecursionForT <- function(x, Nu, K, Tolerance = 10^(-10)) {
+mle_recursion_for_t <- function(x, nu, k, tolerance = 1e-10) {
 
   T      <- nrow(x)         # panel dimension
   N      <- ncol(x)         # panel dimension
   Ones_N <- matrix(1, 1, N) # fixed for fast matrix operation
-  Ones_T <- matrix(1, T, 1) # fixed for fast matrix operation
+  #Ones_T <- matrix(1, T, 1) # fixed for fast matrix operation
 
   # initialize variables
   w <- matrix(1, T, 1)
@@ -27,7 +24,7 @@ MleRecursionForT <- function(x, Nu, K, Tolerance = 10^(-10)) {
   Error <- 10 ^ 6
 
   # start main loop
-  while (Error > Tolerance) {
+  while (Error > tolerance) {
 
     # Step 0: Initialize C
     C_Old <- C
@@ -44,8 +41,8 @@ MleRecursionForT <- function(x, Nu, K, Tolerance = 10^(-10)) {
     L_     <- eigen_$values
 
     # Step 2c: Redefine the eigenvalues
-    L      <- mean(L_[(K + 1):N]) * Ones_N
-    L[1:K] <- L_[1:K]
+    L      <- mean(L_[(k + 1):N]) * Ones_N
+    L[1:k] <- L_[1:k]
 
     # Step 2d: Recompose the scatter matrix
     S      <- E %*% diag(as.vector(L)) %*% t(E)
@@ -55,7 +52,7 @@ MleRecursionForT <- function(x, Nu, K, Tolerance = 10^(-10)) {
 
     # Step 4: Check convergence
     Ma2   <- rowSums((x %*% solve(C)) * x)
-    w     <- (Nu + N) / (Nu + Ma2)
+    w     <- (nu + N) / (nu + Ma2)
     Error <- sum(diag((C - C_Old) ^ 2)) / N
 
   }

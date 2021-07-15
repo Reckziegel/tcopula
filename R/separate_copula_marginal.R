@@ -6,12 +6,14 @@
 #' @param X A numeric \code{matrix}.
 #'
 #' @return A \code{list} with 3 components:
+#'     \itemize{
+#'       \item \code{W}: the ordered marginals
+#'       \item \code{F}: the CDF
+#'       \item \code{U}: the copula
+#'     }
 #'
 #' @keywords internal
-#'
-#' @examples
-#' #
-SeparateMargCop <- function(X) {
+separate_copula_marginal <- function(X) {
 
   J <- nrow(X)
   K <- ncol(X)

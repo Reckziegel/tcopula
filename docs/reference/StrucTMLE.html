@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="ML Estimators for a Structured Correlation Matrix — StrucTMLE" />
-<meta property="og:description" content="Recursively computes the the correlation matrix and the degrees of freedom
-by Maximum-Likelihood (ML) of a t-copula with isotropic structure." />
+<meta property="og:description" content="Computes the the correlation matrix and the degrees of freedom of a t-copula
+using the Maximum-Likelihood (ML) estimator." />
 
 
 
@@ -81,7 +81,7 @@ by Maximum-Likelihood (ML) of a t-copula with isotropic structure." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,7 +92,7 @@ by Maximum-Likelihood (ML) of a t-copula with isotropic structure." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Reckziegel/tcopula/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,49 +115,46 @@ by Maximum-Likelihood (ML) of a t-copula with isotropic structure." />
     </div>
 
     <div class="ref-description">
-    <p>Recursively computes the the correlation matrix and the degrees of freedom
-by Maximum-Likelihood (ML) of a t-copula with isotropic structure.</p>
+    <p>Computes the the correlation matrix and the degrees of freedom of a t-copula
+using the Maximum-Likelihood (ML) estimator.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>StrucTMLE</span>(<span class='kw'>X</span>, <span class='kw'>K</span>, Tolerance = <span class='fl'>10</span><span class='op'>^</span>(<span class='op'>-</span><span class='fl'>10</span>))</pre>
+    <pre class="usage"><span class='fu'>StrucTMLE</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>k</span>, tolerance <span class='op'>=</span> <span class='fl'>1e-10</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X</th>
-      <td><p>A <code>matrix</code> made of timeseries invariants.</p></td>
+      <th>x</th>
+      <td><p>A <code>matrix</code> with multivariate i.i.d. variables.</p></td>
     </tr>
     <tr>
-      <th>K</th>
-      <td><p>A <code>numeric</code> scalar with the number of factors.</p></td>
+      <th>k</th>
+      <td><p>A single <code>double</code> with the number of relevant factors.</p></td>
     </tr>
     <tr>
-      <th>Tolerance</th>
-      <td><p>A <code>numeric</code> scalar used for convergence. By default,
-the algorithm stops it's computations when the error is smaller than <code>10^(-10)</code>.</p></td>
+      <th>tolerance</th>
+      <td><p>A single <code>double</code> used for convergence.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>list</code> with 2 components: <code>Nu</code> (the degrees of freedom)
-and <code>C</code> (the correlation matrix).</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>A <code>list</code> with 2 components:</p><ul>
+<li><p><code>Nu</code>: the degrees of freedom</p></li>
+<li><p><code>C</code>: the correlation matrix</p></li>
+</ul>
 
-    <p>Meucci, Attilio, Estimation of Structured T-Copulas (April 2008). Available
-at SSRN: <a href='https://ssrn.com/abstract=1126401'>https://ssrn.com/abstract=1126401</a> or <a href='http://dx.doi.org/10.2139/ssrn.1126401'>http://dx.doi.org/10.2139/ssrn.1126401</a>.</p>
-<p>Attilio Meucci (2020). <a href='Estimation of Structured t-Copulas'>https://www.mathworks.com/matlabcentral/fileexchange/19751-estimation-of-structured-t-copulas</a>, MATLAB Central File Exchange. Retrieved October 14, 2020.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"DB_SwapParRates"</span>)
-<span class='kw'>Rates</span> <span class='op'>&lt;-</span> <span class='kw'>DB_SwapParRates</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"DB_SwapParRates"</span><span class='op'>)</span>
+<span class='va'>Rates</span> <span class='op'>&lt;-</span> <span class='va'>DB_SwapParRates</span>
 
 <span class='co'># The first difference is stationary</span>
-<span class='kw'>X</span> <span class='op'>&lt;-</span> <span class='kw'>Rates</span>[<span class='fl'>2</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>Rates</span>), ] <span class='op'>-</span> <span class='kw'>Rates</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>Rates</span>) <span class='op'>-</span> <span class='fl'>1</span>, ]
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>Rates</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Rates</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>-</span> <span class='va'>Rates</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Rates</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span>, <span class='op'>]</span>
 
 <span class='co'># fit the model</span>
-<span class='fu'>StrucTMLE</span>(X = <span class='kw'>X</span>, K = <span class='fl'>3</span>)
+<span class='fu'>StrucTMLE</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, k <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $Nu
 #&gt; [1] 49
 #&gt; 

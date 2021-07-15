@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Log-Likelihood for t-distribution — LogLik" />
-<meta property="og:description" content="This function computes the Maximum Likelihood function for multivariate
+<meta property="og:description" content="Computes the Maximum Likelihood function for multivariate
 t-distributed scenarios." />
 
 
@@ -81,7 +81,7 @@ t-distributed scenarios." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,7 +92,7 @@ t-distributed scenarios." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Reckziegel/tcopula/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,11 +115,11 @@ t-distributed scenarios." />
     </div>
 
     <div class="ref-description">
-    <p>This function computes the Maximum Likelihood function for multivariate
+    <p>Computes the Maximum Likelihood function for multivariate
 t-distributed scenarios.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>LogLik</span>(<span class='kw'>x</span>, <span class='kw'>Nu</span>, <span class='kw'>Sigma</span>)</pre>
+    <pre class="usage"><span class='fu'>LogLik</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>Nu</span>, <span class='va'>Sigma</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,17 +134,14 @@ t-distributed scenarios.</p>
     </tr>
     <tr>
       <th>Sigma</th>
-      <td><p>A correlation matrix.</p></td>
+      <td><p>A dispersion matrix.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A single scalar.</p>
+    <p>A <code>double</code> with the estimated likelihood.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>#</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
